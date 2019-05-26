@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>IIT Service Desk</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+body {font-size:16px;}
+.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
+.w3-half img:hover{opacity:1}
+
+
+#myInput {
+  background-image: url("https://png.icons8.com/search");
+  background-position: 10px 10px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  width: 25%;
+  height: 40px;
+  font-size: 14px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.error{
+  color: red;
+}
+
+</style>
+<body>
+<frameset>
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-red w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+  <div class="w3-container">
+    <h3 class="w3-padding-30"><b>Hello Global Admin User</b></h3>
+    <img src="image/logo.jpg" height="150" width="150">    
+  </div>
+  <div class="w3-bar-block">
+    <a href="#tickets" onclick="w3_close();hidetabs('tickets');" class="w3-bar-item w3-button w3-hover-white">IIT Tickets</a>
+    <a href="#reports" onclick="w3_close();hidetabs('reports');" class="w3-bar-item w3-button w3-hover-white">Reports</a>
+    <a href="#config" onclick="w3_close();hidetabs('config');" class="w3-bar-item w3-button w3-hover-white">System Configuration</a>
+    <a href="#tickets" onclick="w3_close();hidetabs('tickets');" class="w3-bar-item w3-button w3-hover-white">My Raised Tickets</a>
+    <a href="#newticket" onclick="w3_close();hidetabs('newticket');" class="w3-bar-item w3-button w3-hover-white">New Ticket</a> 
+   <!-- <a href="#quickticket" onclick="w3_close();hidetabs('quickticket');" class="w3-bar-item w3-button w3-hover-white">Quick New Ticket</a> --> 
+    <a href="#help" onclick="w3_close();hidetabs('help');" class="w3-bar-item w3-button w3-hover-white">FAQ</a> 
+   <!-- <a href="#contact" onclick="w3_close();hidetabs('contact');" class="w3-bar-item w3-button w3-hover-white">Contact Us</a> -->
+    <a href="login.html" onclick="w3_close();" class="w3-bar-item w3-button w3-hover-white">Logout</a>
+  </div>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
+  <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
+  <span>Company Name</span>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:340px;margin-right:40px">
+
+
+  <div class="w3-container" id="config" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>System Configurations</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+     </p>
+
+      <div class="jumbotron" >
+      <h2>User Configuration Option</h2>
+      <p>User configration options listed here</p>
+      </div>
+
+      <div class="jumbotron" >
+      <h2>Department Configuration Option</h2>
+      <p>Department configration options listed here</p>
+      </div>
+
+      <div class="jumbotron" >
+      <h2>Dataset Configuration Option</h2>
+      <p>Dataset configration options listed here. Dropdown value creation, removal, update etc., Change system settings etc. </p>
+      </div>
+
+   </div>
+
+  <div class="w3-container" id="reports" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Reports</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+     </p>
+
+     <div id="chartContainer" style="height: 250px; width: 70%;"></div>
+     <br/>
+     <br/>
+     <div id="chartContainertwo" style="height: 250px; width: 70%;"></div>
+     <br/>
+     <br/>
+     <div id="chartContainerthree" style="height: 250px; width: 70%;"></div>
+
+     <br/>
+     <br/>
+
+     <div id="chartContainerfour" style="height: 250px; width: 70%;"></div>
+
+     <br/>
+     <br/>
+
+
+   </div>
+
+  <div class="w3-container" id="tickets" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Tickets</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+     </p>
+
+
+    <div class="container">
+      <div class="row">
+       <input type="text" id="myInput" onkeyup="mySearchFunction()" placeholder="Search for tickets.." title="Type Category">
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <label for="dropdownid" style="padding-top: 6px;">Sort List:</label>
+       &nbsp;&nbsp;&nbsp;&nbsp;
+      <select id="dropdownid" style="width:200px;height: 40px;" onchange="sortTable()">
+        <option value="">Select</option>
+        <option value="Priority">Priority</option>
+        <option value="status">Status</option>
+      </select>
+   
+    </div>
+      <table class="table table-hover display" id="ticketdata">
+        <thead>
+          <tr>
+            <th width="100px">Ticket No</th>
+            <th width="120px">Category</th>
+            <th width="150px">Department</th>
+            <th width="120px">Priority</th>
+            <th width="120px">Status</th>
+            <th width="170px">Creation Date</th>
+            <th>Closed Date</th>
+          </tr>
+          <tbody id="tablebody">
+            
+          </tbody>
+       </thead>
+
+      </table>
+    </div>
+  </div>
+
+  <div class="w3-container" id="ticketdetail" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Ticket Detail</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+     </p>
+
+
+    <div class="container" align="left">
+
+      <form id="dataForm" method="POST" enctype="multipart/form-data">
+
+        <div class="form-group form-inline">
+         
+            <label for="ticketnodet" style="width: 10%">Ticket No</label>
+            <input class="form-control" id="ticketnodet" type="text" disabled style="width: 20%">
+
+            <label for="statusdet" style="width: 10%;padding-left: 20px">Status</label>
+            <select class="form-control" id="statusdet" style="width: 20%">
+                <option value="">Select</option> 
+                <option value="In Progress">In Progress</option> 
+                <option value="Open" selected="selected">Open</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Closed">Closed</option> 
+              </select>
+     
+        </div>
+
+        <div class="form-group form-inline">
+           
+
+          
+            <label for="departmentdet" style="width: 10%;padding-left: 20px">Department</label>   
+            <select class="form-control" id="departmentdet" name="departmentdet" onchange="" style="width: 20%">
+              <option value="">Select</option>
+              <option value="OTS">OTS</option>
+              <option value="Housekeeping">Housekeeping</option>
+              <option value="ITM">ITM</option>
+              <option value="Food Court">Food Court</option>
+            </select>
+
+            <label for="categorydet" style="width: 10%">Category</label>
+            <select class="form-control" id="categorydet" name="categorydet" style="width: 20%">
+              <option value="">Select</option>
+              <option value="Login">Login</option>
+              <option value="Network">Network</option> 
+              <option value="Wifi">Wifi</option> 
+              <option value="Password">Password</option>   
+            </select>
+           
+        </div>
+
+        <div class="form-group form-inline">
+         
+            <label for="classificationdet" style="width: 10%">Classification</label>
+          
+            <select class="form-control" id="classificationdet" name="classificationdet" style="width: 20%">
+              <option value="">Select</option>
+              <option value="Problem">Problem</option> 
+              <option value="Clarification">Clarification</option>
+              <option value="Information">Information</option>
+              <option value="Request">Request</option> 
+            </select>
+
+            <label for="prioritydet" style="width: 10%;padding-left: 20px">Priority</label>
+
+            <select class="form-control" id="prioritydet" style="width: 20%">
+              <option value="Low">Low</option> 
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option> 
+            </select>
+
+        </div>
+
+        <div class="form-group form-inline">
+
+            <label for="assigneeid" style="width: 10%;">Assignee</label>
+            <select class="form-control" id="assigneeid" style="width: 20%">
+                <option value="">Select</option> 
+                <option value="In Progress">Assignee One</option> 
+                <option value="Open" selected="selected">Assignee Two</option>
+                <option value="Assigned">Assignee Three</option>
+                <option value="Closed">Assignee Four</option> 
+              </select>
+     
+        </div>
+
+        <div class="form-group" style="width: 60%;">
+          <label for="comment">Ticket Description</label>
+          <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+        </div>
+
+        <a href="attachment.html" class="btn btn-primary" role="button" target="_blank" style="width: 60%">View Ticket Attachment</a>
+
+        <br/>
+
+        <h3 class="w3-large w3-text-red"><b>Resolution Details</b></h3>
+         <hr style="width:50px;border:5px solid red" class="w3-round">
+         </p>
+
+        <div class="form-group" style="width: 60%;">
+          <label for="commentres">Ticket Resolution Comments</label>
+          <textarea class="form-control" rows="5" id="commentres" name="commentres"></textarea>
+        </div>
+
+        <a href="attachment.html" class="btn btn-primary" role="button" target="_blank" style="width: 60%">View Resolution Attachment</a>
+
+        <br/>
+        <br/>
+
+        <div class="form-group" style="width: 60%;"><label for="file1">Upload Resolution File</label><input class="form-control" id="file1" type="file" name="file1" style="height: 50px;"></div>
+
+         <h3 class="w3-large w3-text-red"><b>User Details</b></h3>
+         <hr style="width:50px;border:5px solid red" class="w3-round">
+         </p>
+
+        <div class="form-group form-inline">
+         
+            <label for="namedet" style="width: 10%">Name</label>
+            <input class="form-control" id="namedet" type="text" style="width: 20%">
+
+            <label for="studentiddet" style="width: 10%;padding-left: 20px">Student ID</label>
+            <input class="form-control" id="studentiddet" type="text" style="width: 20%">
+
+        </div>
+
+        <div class="form-group form-inline">
+         
+            <label for="emaildet" style="width: 10%">Email</label>
+            <input class="form-control" id="emaildet" type="text" style="width: 20%">
+
+            <label for="phonedet" style="width: 10%;padding-left: 20px">Phone</label>
+            <input class="form-control" id="phonedet" type="text" style="width: 20%">
+
+            <br/>
+            <br/>
+        </div>
+
+        <h3 class="w3-large w3-text-red"><b>Ticket Activity History</b></h3>
+         <hr style="width:50px;border:5px solid red" class="w3-round">
+        </p>
+
+        <div class="container" align="left">
+          <table class="table table-bordered" id="activitytableid" style="width: 50%" align="left">
+
+            <thead>
+              <tr>
+                <th width="25%">Activity</th>
+                <th width="25%">Details</th>                
+              </tr>
+            </thead>
+            <tbody id="activitytablebodyid">
+              <tr></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </form>
+
+      <div class="form-inline">
+
+      <button class="btn btn-info" id="prevBtn" type="button" style="margin-top: 30px">Back to Ticket</button>
+      <button class="btn btn-success" id="updateBtn" type="button" style="margin-left: 15%;margin-top: 30px">Update Ticket</button>
+
+      </div>
+
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="w3-container" style="margin-top:80px" id="newticket">
+    <h1 class="w3-xxxlarge w3-text-red"><b>New Ticket</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+
+        <div class="container" align="left">
+
+                <form id="dataFormMain" method="POST" enctype="multipart/form-data">
+
+                   
+                      <div class="form-group" style="width: 60%;">
+                              <label for="sel1">Department*</label>
+                              <select class="form-control" id="sel1" name="sel1" onchange="defineCategory()">
+                                <option value="">Select</option>
+                                <option value="OTS">OTS</option>
+                                <option value="Housekeeping">Housekeeping</option>
+                                <option value="ITM">ITM</option>
+                                <option value="Food Court">Food Court</option>
+                              </select>
+                      </div>
+                      <div class="form-group" style="width: 60%;" id="primarydiv">
+                              <label for="sel2">Category*</label>
+                              <select class="form-control" id="sel2">
+                                <option value="">Select</option>      
+                              </select>
+                      </div>
+                      <div class="form-group" style="width: 60%;" id="otsid">
+                              <label for="sel3">Category*</label>
+                              <select class="form-control" id="sel3" name="sel3">
+                                <option value="">Select</option>
+                                <option value="Login">Login</option>
+                                <option value="Network">Network</option> 
+                                <option value="Wifi">Wifi</option> 
+                                <option value="Password">Password</option>   
+                              </select>
+                      </div>
+                      <div class="form-group" style="width: 60%;" id="itmid">
+                              <label for="sel4">Category*</label>
+                              <select class="form-control" id="sel4">
+                                <option value="">Select</option>
+                                <option value="Course">Course</option> 
+                                <option value="Advisor">Advisor</option>
+                                <option value="Feedback">Feedback</option>                                      
+                              </select>
+                      </div>
+                      <div class="form-group" style="width: 60%;" id="foodid">
+                              <label for="sel5">Category*</label>
+                              <select class="form-control" id="sel5">
+                                <option value="">Select</option>
+                                <option value="Food Quality">Food Quality</option> 
+                                <option value="Other Concern">Other Concern</option> 
+                              </select>
+                      </div>
+
+                      <div class="form-group" style="width: 60%;" id="houseid">
+                              <label for="sel6">Category*</label>
+                              <select class="form-control" id="sel6">
+                                <option value="">Select</option>
+                                <option value="Repair">Repair</option> 
+                                <option value="Water Issue">Water Issue</option> 
+                              </select>
+                      </div>
+
+                   
+                      <div class="form-group" style="width: 60%;">
+                              <label for="classification">Classification*</label>
+                              <select class="form-control" id="classification" name="classification">
+                                <option value="">Select</option>
+                                <option value="Problem">Problem</option> 
+                                <option value="Clarification">Clarification</option>
+                                <option value="Information">Information</option>
+                                <option value="Request">Request</option> 
+                              </select>
+                      </div>
+                      <div class="form-group" style="width: 60%;">
+                              <label for="Priority">Priority</label>
+                              <select class="form-control" id="Priority">
+                                <option value="Low">Low</option> 
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option> 
+                              </select>
+                      </div>
+                      
+                      <div class="form-group" style="width: 60%;">
+                        <label for="comment">Ticket Description*</label>
+                        <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+                      </div>
+                      <div class="form-group" style="width: 60%;"><label for="file">Upload File</label><input class="form-control" id="file" type="file" name="file" style="height: 50px;"></div>
+                                        
+
+
+                </form>
+
+                  <button class="btn btn-success" disabled id="progressbtn" style="margin-left: 25%;margin-top: 30px;display: none;visibility: hidden;">
+                      <span class="spinner-border spinner-border-sm"></span>
+                        Creating Ticket..
+                      </button>
+
+                <button class="btn btn-success" id="saveBtn" type="button" style="margin-left: 25%;margin-top: 30px">Create Ticket</button>
+
+                <div class="alert alert-success" id="alertid" style="display: none;visibility: hidden;" >
+                    
+                </div>
+          </div>        
+  </div>
+  
+
+  <!-- Services -->
+  <div class="w3-container" id="quickticket" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>Quick New Ticket</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+
+    <div class="container" align="left">
+
+                <form id="dataFormquick" method="POST" enctype="multipart/form-data">
+
+                  <div class="form-group" style="width: 60%;">
+                          <label for="sel1">Ticket Type*</label>
+                          <select class="form-control" id="selquick" name="selquick">
+                            <option value="">Select</option>
+                            <option value="Login">User Id Locked</option>
+                            <option value="Password">Password Reset</option>     
+                          </select>
+                  </div>
+
+                </form>
+
+      </div>
+
+        <button class="btn btn-success" disabled id="progressbtnquick" style="margin-left: 25%;margin-top: 30px;display: none;visibility: hidden;">
+              <span class="spinner-border spinner-border-sm"></span>
+                Creating Ticket..
+              </button>
+
+        <button class="btn btn-success" id="saveBtnquick" type="button" style="margin-left: 25%;margin-top: 30px">Create Ticket</button>
+
+        <div class="alert alert-success" id="alertidquick" style="display: none;visibility: hidden;" > </div>
+
+  </div>
+  
+  <!-- Designers -->
+  <div class="w3-container" id="help" style="margin-top:75px">
+    <h1 class="w3-xxxlarge w3-text-red"><b>FAQ</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <div class="container" style="width: 100%;" align="left">
+      <div class="jumbotron" >
+      <h2>FAQ</h2>
+      <p>Help documentation is designed for quick help. If you are not satisfied with responses, please raise a ticket or contact us using details provided in Contact Us tab.</p>
+      </div>
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapse1">OTS FAQ - Click to Expand</a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse">
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Wifi not connecting?:</strong> Go to devide settings and reset network options.</li>
+              <li class="list-group-item"><strong>User ID Locked?:</strong> Raise an unlock request or call OTS support desk at 1234343 and unlock your userid.</li>
+              <li class="list-group-item"><strong>Network issue?:</strong> Connect your laptop with LAN cable and see if network appears.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#collapse2">Food Court FAQ - Click to Expand</a>
+            </h4>
+          </div>
+          <div id="collapse2" class="panel-collapse collapse">
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Todays Menu?:</strong> Find our everyday menu at https://iitfoodmenu.com</li>
+              <li class="list-group-item"><strong>Timings of Food coutr?:</strong> Center court remains open 24*7. Commons everyday 6 AM to 8 PM.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+
+    <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse3">ITM FAQ - Click to Expand</a>
+          </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>ITM Dept office?:</strong> It is in PH 223.</li>
+            <li class="list-group-item"><strong>Course Offerings?:</strong> Visit school of applied tech home page for course offerings.</li>
+            <li class="list-group-item"><strong>Appointment scheduling?:</strong> Visit appointment schedule website http://scheduleme.sat.com to book an appointment with your advisors or professors.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    </div>
+  </div>
+
+  <!-- The Team -->
+  <!--
+  <div class="w3-row-padding w3-grayscale">
+    <div class="w3-col m4 w3-margin-bottom">
+      <div class="w3-light-grey">
+        <img src="/w3images/team2.jpg" alt="John" style="width:100%">
+        <div class="w3-container">
+          <h3>John Doe</h3>
+          <p class="w3-opacity">CEO & Founder</p>
+          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
+        </div>
+      </div>
+    </div>
+    <div class="w3-col m4 w3-margin-bottom">
+      <div class="w3-light-grey">
+        <img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+        <div class="w3-container">
+          <h3>Jane Doe</h3>
+          <p class="w3-opacity">Designer</p>
+          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
+        </div>
+      </div>
+    </div>
+    <div class="w3-col m4 w3-margin-bottom">
+      <div class="w3-light-grey">
+        <img src="/w3images/team3.jpg" alt="Mike" style="width:100%">
+        <div class="w3-container">
+          <h3>Mike Ross</h3>
+          <p class="w3-opacity">Architect</p>
+          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+-->
+ 
+  <!-- Contact -->
+  
+
+ 
+   <div class="w3-container" id="contact" style="margin-top:75px">
+
+    <h1 class="w3-xxxlarge w3-text-red"><b>Contact Us</b></h1>
+    <hr style="width:50px;border:5px solid red" class="w3-round">
+    <p><h3>Do you need further assistance? Please contact us via below details.</h3></p>
+
+     <div class="container">
+
+      <div>
+        <p><h1><span class="glyphicon glyphicon-envelope"> iitsupport@iit.ed </span></h1></p>
+        <br/>
+      </div>
+
+      <div>
+        <p><h1><span class="glyphicon glyphicon-earphone"> (312) 409-1731</span></h1><h4>(24*7 Support)</h4></p>
+        <br/>
+      </div>
+
+      <div>
+        <p><h1><span class="glyphicon glyphicon-phone-alt"> (000) 409-1731</span></h1><h4>Escalation: Mon-Fri 9:00 AM to 5:00 PM</h4></p>
+      
+      </div>
+
+     </div>
+
+     </div>
+<!-- End page content -->
+</div>
+
+<!-- W3.CSS Container -->
+<!--
+<div class="w3-light-grey w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
+-->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"> </script>
+
+<script src="globaladminfunc.js"></script>
+
+<script type="text/javascript">
+  
+  hidetabs("tickets");
+</script>
+
+</frameset>
+
+</body>
+</html>
